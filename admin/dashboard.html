@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<div class="nav">
+    <h2>Admin Dashboard</h2>
+</div>
+
+<div class="container">
+    <div class="card">
+        <h3>Total Users</h3>
+        <p id="userCount">Loading...</p>
+    </div>
+
+    <div class="card">
+        <h3>Total Posts</h3>
+        <p id="postCount">Loading...</p>
+    </div>
+
+    <a href="users.html">Manage Users</a><br>
+    <a href="posts.html">Manage Posts</a>
+</div>
+
+<script>
+async function loadStats() {
+    const users = await fetch("http://localhost:8080/api/v1/users", {
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token")
+        }
+    }).then(r => r.json());
+
+    const posts = await fetch("http://localhost:8080/api/v1/posts")
+        .then(r => r.json());
+
+    document.getElementById("userCount").innerText = users.length;
+    document.getElementById("postCount").innerText = posts.length;
+}
+
+loadStats();
+</script>
+
+</body>
+</html>
